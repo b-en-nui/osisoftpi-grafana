@@ -374,6 +374,17 @@ export class PiWebApiDatasource {
    * 
    */
   parsePiPointValue (value, isSummary = false, target) {
+  if (typeof value.Value === 'string' || value.Value instanceof String){
+    var str = String(value.Value);
+      if (isSummary){
+        str = String(value.Value.Value);
+        if (target.summary.interval == "") {
+            return [str, new Date(target.endTime).getTime()];
+        }
+        return [str, new Date(value.Value.Timestamp).getTime()];
+    }
+    return [str, new Date(value.Timestamp).getTime()];
+  }
     var num = Number(value.Value)
     if (isSummary) {
       num = Number(value.Value.Value)
